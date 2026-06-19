@@ -5,11 +5,11 @@ data = np.loadtxt('wordle-La.txt', dtype=str)
 dataset = set(data)
 
 the_word = None
-#the_word = 'token'
+the_word = 'emoji'
 my_guesses = [
-  ('raise', '.....'),
-  #('towel', 'gg.g.'),
-  #('token', 'ggggg'),
+  ('raise', '..y.y'),
+  #('widen', '.y.y.'),
+  #('helix', '.y.y.'),
   ]
 
 def guess_to_known(guess):
@@ -79,7 +79,7 @@ for my_guess in my_guesses:
   known = guess_to_known(my_guess)
   next_guess = update(known)
 
-while True:
+while dataset:
   if len(known['green'])==5:
     print(f'Got it in {trials}/6: {the_word}')
     break
