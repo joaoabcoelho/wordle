@@ -5,11 +5,12 @@ data = np.loadtxt('wordle-La.txt', dtype=str)
 dataset = set(data)
 
 the_word = None
-the_word = 'emoji'
+the_word = 'curry'
 my_guesses = [
-  ('raise', '..y.y'),
-  #('widen', '.y.y.'),
-  #('helix', '.y.y.'),
+  #('raise', 'y....'),
+  #('troop', '.y...'),
+  #('churn', 'g.yg.'),
+  #('ovate', 'ggggg'),
   ]
 
 def guess_to_known(guess):
@@ -38,7 +39,7 @@ def test(guess, result):
   return True
 
 def find_best_guess(word_list):
-  best_guess = (0, '')
+  best_guesses = [(-1,'')]
   n = len(word_list)
   for guess in word_list:
     nemesis = ('', n)
@@ -50,9 +51,12 @@ def find_best_guess(word_list):
           excluded += 1
       if excluded < nemesis[1]:
         nemesis = (word, excluded)
-    if nemesis[1]/n >= best_guess[0]:
-      best_guess = (nemesis[1]/n, guess, nemesis[0])
-  return best_guess
+    if nemesis[1]/n >= best_guesses[0][0]:
+      if nemesis[1]/n > best_guesses[0][0]:
+        best_guesses = [(nemesis[1]/n, guess, nemesis[0])]
+      else:
+        best_guesses.append((nemesis[1]/n, guess, nemesis[0]))
+  return best_guesses
 
 
 trials = 0
@@ -74,6 +78,9 @@ def update(known):
   trials += 1
   return next_guess
 
+known = {'green': {}, 'yellow': {}, 'gray': set()}
+next_guess = [(1, 'raise', np.random.choice(list(dataset)))]
+
 for my_guess in my_guesses:
   print(f'Guessed: {my_guess[0]}')
   known = guess_to_known(my_guess)
@@ -84,12 +91,11 @@ while dataset:
     print(f'Got it in {trials}/6: {the_word}')
     break
 
-  print(f'Best guess: {next_guess[1]} ({next_guess[0]*100:.0f}%)')
+  print(f'Best guess: {[n[1] for n in next_guess]} ({next_guess[0][0]*100:.0f}%)')
 
   if the_word is None:
-    the_word = np.random.choice(tuple(dataset))
-    the_word = next_guess[2]
+    the_word = next_guess[0][2]
     print('*'*10, f'Set the word to {the_word}', '*'*10)
 
-  known = make_guess(next_guess[1], the_word)
+  known = make_guess(next_guess[0][1], the_word)
   next_guess = update(known)
