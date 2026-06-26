@@ -5,11 +5,11 @@ data = np.loadtxt('wordle-La.txt', dtype=str)
 dataset = set(data)
 
 the_word = None
-the_word = 'curry'
+the_word = 'acute'
 my_guesses = [
-  #('raise', 'y....'),
-  #('troop', '.y...'),
-  #('churn', 'g.yg.'),
+  #('raise', '.y..g'),
+  #('amble', 'g...g'),
+  #('agate', 'g..gg'),
   #('ovate', 'ggggg'),
   ]
 
@@ -19,6 +19,9 @@ def guess_to_known(guess):
     if c=='g': result['green'][i] = l
     elif c=='y': result['yellow'][i] = l
     else: result['gray'].add(l)
+  for l in list(result['gray']):
+    if l in list(result['green'].values()) + list(result['yellow'].values()):
+      result['gray'].discard(l)
   return result
 
 def make_guess(guess, word):
