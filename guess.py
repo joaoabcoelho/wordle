@@ -1,15 +1,16 @@
 import numpy as np
 
 data = np.loadtxt('wordle-La.txt', dtype=str)
+#data = np.concatenate([data, np.loadtxt('wordle-Ta.txt', dtype=str)])
 
 dataset = set(data)
 
 the_word = None
-the_word = 'acute'
+the_word = 'emcee'
 my_guesses = [
-  #('raise', '.y..g'),
-  #('amble', 'g...g'),
-  #('agate', 'g..gg'),
+  #('raise', '....g'),
+  #('lunge', '....g'),
+  #('choke', 'y...g'),
   #('ovate', 'ggggg'),
   ]
 
